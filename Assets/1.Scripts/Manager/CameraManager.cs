@@ -16,7 +16,7 @@ public class CameraManager : MonoBehaviour
     private Transform target;
     
     private Vector3 targetPosition;
-    private const float SmoothSpeed = 10f;
+    private const float SmoothSpeed = 30f;
 
     void LateUpdate()
     {
