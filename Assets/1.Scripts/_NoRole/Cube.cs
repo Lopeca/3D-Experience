@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Cube:MonoBehaviour, IInteractable
+public class Cube:MonoBehaviour, IInputBasedInteractable
 {
     private static readonly int OutlineThickness = Shader.PropertyToID("_OutlineThickness");
     private Material outlineMaterial;

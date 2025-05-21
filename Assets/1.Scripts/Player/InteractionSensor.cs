@@ -11,7 +11,7 @@ public class InteractionSensor : MonoBehaviour
     [SerializeField] LayerMask layerMask;
 
     public GameObject detectedObject;
-    private IInteractable detectedInteractable;
+    private IInputBasedInteractable _detectedInputBasedInteractable;
 
     InteractionUI interactionUI;
     private Camera _camera;
@@ -39,29 +39,29 @@ public class InteractionSensor : MonoBehaviour
         {
             if (hit.collider.gameObject != detectedObject)
             {
-                detectedInteractable?.OnTargetLost();
+                _detectedInputBasedInteractable?.OnTargetLost();
                 detectedObject = hit.collider.gameObject;
-                detectedInteractable = detectedObject.GetComponent<IInteractable>();
-                detectedInteractable.OnTargeted();
+                _detectedInputBasedInteractable = detectedObject.GetComponent<IInputBasedInteractable>();
+                _detectedInputBasedInteractable.OnTargeted();
                 
                 interactionUI?.gameObject.SetActive(true);
-                interactionUI?.ShowPrompt(detectedInteractable.Prompt);
+                interactionUI?.ShowPrompt(_detectedInputBasedInteractable.Prompt);
             }
         }
         else
         {
             detectedObject = null;
-            detectedInteractable?.OnTargetLost();
+            _detectedInputBasedInteractable?.OnTargetLost();
             interactionUI?.gameObject.SetActive(false);
         }
     }
 
     public void OnInteractInput(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && detectedInteractable != null)
+        if (context.phase == InputActionPhase.Started && _detectedInputBasedInteractable != null)
         {
-            detectedInteractable.Interact();
-            detectedInteractable = null;
+            _detectedInputBasedInteractable.Interact();
+            _detectedInputBasedInteractable = null;
             detectedObject = null;
         }
     }
