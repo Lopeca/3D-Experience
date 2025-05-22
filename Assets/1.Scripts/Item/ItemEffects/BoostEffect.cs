@@ -15,13 +15,13 @@ public class BoostEffect : ItemEffect
         timer = player.AddComponent<ItemEffectTimer>();
         timer.Init(this, duration, icon);
 
-        player.AddItemEffect(timer);
+        player.itemHandler.AddItemEffectTimer(timer);
     }
 
 
 
     public override void Deactivate()
     {
-        player.RemoveItemEffect(timer);
+        player.itemHandler.RemoveItemEffectTimer(timer);
     }
 }

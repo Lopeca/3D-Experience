@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public PlayerController playerController;
+    public ItemHandler itemHandler;
+    
     [Header("Stats")]
     [SerializeField]
     float maxHealth;
@@ -23,6 +26,13 @@ public class Player : MonoBehaviour
     [Header("UI")]
     private HurtAlertPanel hurtAlertPanel;
     private GageTypeUI healthUI;
+
+    private void Awake()
+    {
+        playerController = GetComponent<PlayerController>();
+        itemHandler = GetComponent<ItemHandler>();
+    }
+
     private void Start()
     {
         healthUI = GameManager.Instance.uiManager.healthUI;

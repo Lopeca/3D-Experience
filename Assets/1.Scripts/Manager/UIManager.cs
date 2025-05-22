@@ -7,4 +7,6 @@ public class UIManager : MonoBehaviour
     public GageTypeUI healthUI;
     public HurtAlertPanel hurtAlert;
     public InteractionUI interactionUI;
+    public ActiveItemEffectUI activeItemEffectUI;
+    public ItemSlotUI itemSlotUI;
 }

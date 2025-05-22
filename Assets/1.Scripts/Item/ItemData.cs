@@ -5,10 +5,10 @@ using UnityEngine;
 
 public abstract class ItemEffect : ScriptableObject
 {
-    protected PlayerController player;
+    protected Player player;
     protected Sprite icon;
 
-    public virtual void Init(PlayerController _player, Sprite _icon)
+    public virtual void Init(Player _player, Sprite _icon)
     {
         player = _player;
         icon = _icon;
@@ -33,7 +33,7 @@ public class ItemData : ScriptableObject
     private ItemEffect effect;
     public ItemEffect Effect => effect;
 
-    public void Use(PlayerController player)
+    public void Use(Player player)
     {
         effect.Init(player, icon);
         effect.Activate();

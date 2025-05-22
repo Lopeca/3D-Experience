@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 
 public class PlayerController : MonoBehaviour
 {
+    private Player player;
+    
     private Rigidbody rb;
     private Vector2 movementInput;
     private Vector2 mouseDelta;
     float sphereRadius;
     private const float rayCheckDistance = 0.1f; // 지면과의 최소 거리
-
+    
     [Header("Movement")]
     [SerializeField]
     Transform cameraContainer;
@@ -27,12 +31,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] bool isGrounded;
     private Vector3 groundNormal;
-
+    
     private void Awake()
     {
+        player = GetComponent<Player>();
         rb = GetComponentInChildren<Rigidbody>();
         targetLookAngle = transform.forward;
         sphereRadius = GetComponent<SphereCollider>().radius;
+        
     }
 
     private void FixedUpdate()
@@ -132,6 +138,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnNumberInput(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (context.control is not KeyControl key) return;
+
+            switch (key.keyCode)
+            {
+                case Key.Digit1:
+                    player.itemHandler.UseItem(1);
+                    break;
+                case Key.Digit2:
+                    player.itemHandler.UseItem(2);
+                    break;
+            }
+            
+        }
+    }
+
     #endregion
 
     public void ForceMovement(float bumpForce, Vector3 contactNormal)
@@ -139,13 +164,6 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(contactNormal * bumpForce, ForceMode.VelocityChange);
     }
 
-    public void AddItemEffect(ItemEffectTimer timer)
-    {
-        throw new NotImplementedException();
-    }
 
-    public void RemoveItemEffect(ItemEffectTimer timer)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

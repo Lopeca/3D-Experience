@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 741aa31e319fc3441b09e7c1de66d673, type: 3}
   m_Name: BoostItem
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
+  itemName: "\uBD80\uC2A4\uD130"
+  icon: {fileID: 21300000, guid: 9c492f03d94582a49956c0431a811633, type: 3}
   effect: {fileID: 11400000, guid: 5f9a66cbcca3a1840b3091ef8a5e2f96, type: 2}
