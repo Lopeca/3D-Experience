@@ -8,39 +8,40 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector2 movementInput;
     private Vector2 mouseDelta;
+    float sphereRadius;
+    private const float rayCheckDistance = 0.1f; // 지면과의 최소 거리
 
     [Header("Movement")]
     [SerializeField]
     Transform cameraContainer;
     [SerializeField] float movePower;
+    [SerializeField] float maxSpeed;
+    [SerializeField] float currentSpeed;
     [SerializeField] float jumpImpulsePower;
-    [SerializeField]
-    float lookSensitivity;
+    [SerializeField] float lookSensitivity;
+
+    public float movePowerMultiplier = 1;
 
     private float upDownLookAngle;
     private Vector3 targetLookAngle;
 
     [SerializeField] bool isGrounded;
-    private Vector3 accumulatedJumpDirection;
-    //private int contactCount;
+    private Vector3 groundNormal;
+
     private void Awake()
     {
         rb = GetComponentInChildren<Rigidbody>();
         targetLookAngle = transform.forward;
+        sphereRadius = GetComponent<SphereCollider>().radius;
     }
 
     private void FixedUpdate()
     {
-        ResetInfoForJump();
+        isGrounded = IsGrounded(); // isGrounded 수요가 두 군데라서 캐싱
         HandleInputTypePerformed();
+        currentSpeed = rb.velocity.magnitude;   // 인스펙터 관찰용
     }
-
-    private void ResetInfoForJump()
-    {
-        accumulatedJumpDirection = Vector3.zero;
-        // contactCount = 0; 
-    }
-
+    
     private void LateUpdate()
     {
         Look();
@@ -58,9 +59,15 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 direction = cameraContainer.forward * movementInput.y + cameraContainer.right * movementInput.x;
-        direction.y = 0; // 정면을 볼 때 제일 빠른 그런 느낌이 좋다면 이 줄에 주석
+        direction.y = 0; 
         direction = direction.normalized;
-        rb.AddForce(direction * movePower);
+        rb.AddForce(direction * (movePower * movePowerMultiplier));
+
+        if (rb.velocity.magnitude > maxSpeed)
+        {
+            rb.velocity = rb.velocity.normalized * maxSpeed;
+            
+        }
     }
 
     private void Look()
@@ -84,28 +91,19 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         if (!isGrounded) return;
-        Vector3 jumpVector = accumulatedJumpDirection.normalized;
-        
-        
-        rb.AddForce(jumpVector * jumpImpulsePower, ForceMode.Impulse);
-        
+        rb.AddForce(groundNormal * jumpImpulsePower, ForceMode.Impulse);
     }
 
-    private void OnCollisionStay(Collision collision)
+    bool IsGrounded()
     {
-        if (collision.contacts.Length == 0) return;
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (Physics.SphereCast(transform.position + new Vector3(0, 0.05f, 0), sphereRadius, Vector3.down, out RaycastHit hit, rayCheckDistance))
         {
-            foreach (ContactPoint contact in collision.contacts)
-            {
-                if (Vector3.Angle(contact.normal, Vector3.up) > 60) continue;
- 
-                isGrounded = true;
-                accumulatedJumpDirection += contact.normal;
-                //contactCount++;
-            }
+            groundNormal = hit.normal;
+            return true;
         }
+
+       
+        return false;
     }
 
     #region InputAction Functions
@@ -135,4 +133,19 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    public void ForceMovement(float bumpForce, Vector3 contactNormal)
+    {
+        rb.AddForce(contactNormal * bumpForce, ForceMode.VelocityChange);
+    }
+
+    public void AddItemEffect(ItemEffectTimer timer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void RemoveItemEffect(ItemEffectTimer timer)
+    {
+        throw new NotImplementedException();
+    }
 }

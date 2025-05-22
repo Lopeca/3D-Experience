@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5659714499631379949}
   - component: {fileID: 777759694997086905}
   m_Layer: 0
-  m_Name: Cone
+  m_Name: Spike
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78dde23c922761345b7ab4598bb7eee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &8085993147413871771
 GameObject:
   m_ObjectHideFlags: 0

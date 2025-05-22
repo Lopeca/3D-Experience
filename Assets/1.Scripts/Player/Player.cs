@@ -6,23 +6,27 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    [Header("Stats")]
     [SerializeField]
     float maxHealth;
     public float MaxHealth => maxHealth;
     [SerializeField]
     float health; // 코드 복잡해지면 스탯 핸들러로 뺄 것
 
-    private GageTypeUI healthUI;
-
     [SerializeField]
     private float damageTerm = 1f;
     private float lastDamagedTime = 0;
+    
     [SerializeField]
-    private HurtAlertPanel hurtAlert;
+    //int invincibleVariety = 0; // 무적 아이템 수가 복수일 때를 가정
+    
+    [Header("UI")]
+    private HurtAlertPanel hurtAlertPanel;
+    private GageTypeUI healthUI;
     private void Start()
     {
         healthUI = GameManager.Instance.uiManager.healthUI;
-        hurtAlert = GameManager.Instance.uiManager.hurtAlert;
+        hurtAlertPanel = GameManager.Instance.uiManager.hurtAlert;
     }
 
     public void TakeDamage(float damage)
@@ -34,7 +38,7 @@ public class Player : MonoBehaviour
             healthUI.SetValue(health);
             lastDamagedTime = Time.time;
             
-            hurtAlert.Alert();
+            hurtAlertPanel.Alert();
         }
     }
 
