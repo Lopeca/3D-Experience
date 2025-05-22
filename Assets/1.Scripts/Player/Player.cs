@@ -56,4 +56,10 @@ public class Player : MonoBehaviour
     {
         healthUI?.SetValue(health);
     }
+
+    public void Heal()
+    {
+        health = maxHealth;
+        healthUI.SetValue(health);
+    }
 }

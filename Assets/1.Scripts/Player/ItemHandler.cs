@@ -40,6 +40,7 @@ public class ItemHandler:MonoBehaviour
         
         items[trueIndex].Use(player);
         items.RemoveAt(trueIndex);
+        itemSlotUI.UpdateSlots(items);
     }
     
     public void AddItemEffectTimer(ItemEffectTimer timer)

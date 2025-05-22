@@ -15,6 +15,7 @@ public class BoostEffect : ItemEffect
         timer = player.AddComponent<ItemEffectTimer>();
         timer.Init(this, duration, icon);
 
+        player.playerController.movePowerMultiplier = 3;
         player.itemHandler.AddItemEffectTimer(timer);
     }
 
@@ -22,6 +23,7 @@ public class BoostEffect : ItemEffect
 
     public override void Deactivate()
     {
+        player.playerController.movePowerMultiplier = 1;
         player.itemHandler.RemoveItemEffectTimer(timer);
     }
 }

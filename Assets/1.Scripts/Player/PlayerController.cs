@@ -20,12 +20,13 @@ public class PlayerController : MonoBehaviour
     Transform cameraContainer;
     [SerializeField] float movePower;
     [SerializeField] float maxSpeed;
-    [SerializeField] float currentSpeed;
+    
     [SerializeField] float jumpImpulsePower;
     [SerializeField] float lookSensitivity;
 
     public float movePowerMultiplier = 1;
-
+    public float currentSpeed;  // 관측용 변수
+    
     private float upDownLookAngle;
     private Vector3 targetLookAngle;
 
@@ -69,9 +70,9 @@ public class PlayerController : MonoBehaviour
         direction = direction.normalized;
         rb.AddForce(direction * (movePower * movePowerMultiplier));
 
-        if (rb.velocity.magnitude > maxSpeed)
+        if (rb.velocity.magnitude > maxSpeed * movePowerMultiplier)
         {
-            rb.velocity = rb.velocity.normalized * maxSpeed;
+            rb.velocity = rb.velocity.normalized * (maxSpeed * movePowerMultiplier);
             
         }
     }

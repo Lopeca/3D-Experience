@@ -37,6 +37,7 @@ public class ItemEffectTimer : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         effect.Deactivate();
+        Destroy(iconUI.gameObject);
         Destroy(this);
     }
 }
