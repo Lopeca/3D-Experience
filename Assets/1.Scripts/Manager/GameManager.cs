@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public CameraManager cameraManager;
     public UIManager uiManager;
     public Player player;
 

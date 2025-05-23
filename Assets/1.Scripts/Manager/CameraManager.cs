@@ -9,7 +9,7 @@ public enum CameraState
 }
 public class CameraManager : MonoBehaviour
 {
-    private CameraState state;
+    public CameraState state;
 
     [SerializeField]
     private Camera mainCamera;

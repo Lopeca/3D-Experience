@@ -14,11 +14,11 @@ public class InteractionSensor : MonoBehaviour
     private IInputBasedInteractable _detectedInputBasedInteractable;
 
     InteractionUI interactionUI;
-    private Camera _camera;
+    private CameraManager cameraManager;
 
     private void Start()
     {
-        _camera = Camera.main;
+        cameraManager = GameManager.Instance.cameraManager;
         GameManager.Instance.uiManager.interactionUI.TryGetComponent(out interactionUI);
         
         Debug.Assert(interactionUI, "UI가 없어도 일단 작동하기를 의도한다는 뜻에서 만들어본 경고문");
@@ -32,10 +32,14 @@ public class InteractionSensor : MonoBehaviour
 
     private void Detect()
     {
-        Ray ray = _camera.ScreenPointToRay(new Vector3((float)Screen.width / 2, (float)Screen.height / 2));
+        float sphereRayRadiusMultiplier = cameraManager.state == CameraState.P1 ? 1 : 3;
+        Vector3 rayOrigin = transform.position - cameraManager.transform.forward * sphereRayRadius;
+        Ray ray = new Ray(rayOrigin, cameraManager.transform.forward);
+        
         RaycastHit hit;
+        bool cast = Physics.SphereCast(ray, sphereRayRadius * sphereRayRadiusMultiplier, out hit, checkDistance, layerMask);
 
-        if (Physics.SphereCast(ray, sphereRayRadius,out hit, checkDistance, layerMask))
+        if (cast)
         {
             if (hit.collider.gameObject != detectedObject)
             {

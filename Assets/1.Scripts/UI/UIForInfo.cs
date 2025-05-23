@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UIForDebug : MonoBehaviour
+public class UIForInfo : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI velocityText;
