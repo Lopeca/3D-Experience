@@ -33,7 +33,7 @@ public class InteractionSensor : MonoBehaviour
     private void Detect()
     {
         float sphereRayRadiusMultiplier = cameraManager.state == CameraState.P1 ? 1 : 3;
-        Vector3 rayOrigin = transform.position - cameraManager.transform.forward * sphereRayRadius;
+        Vector3 rayOrigin = transform.position - cameraManager.transform.forward * (sphereRayRadius * sphereRayRadiusMultiplier);
         Ray ray = new Ray(rayOrigin, cameraManager.transform.forward);
         
         RaycastHit hit;
@@ -55,6 +55,7 @@ public class InteractionSensor : MonoBehaviour
         else
         {
             detectedObject = null;
+            _detectedInputBasedInteractable = null;
             _detectedInputBasedInteractable?.OnTargetLost();
             interactionUI?.gameObject.SetActive(false);
         }
